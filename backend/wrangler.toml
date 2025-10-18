@@ -1,0 +1,17 @@
+name = "doctorai-connect"
+main = "src/worker.ts"
+compatibility_date = "2024-12-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "doctorai-db"
+database_id = "bd5cf569-0684-41bc-b441-ae6fc66ba509"
+
+[ai]
+binding = "AI"
+
+[vars]
+JWT_SECRET = "replace-with-a-long-random-secret"
+
+[dev]
+port = 8787
