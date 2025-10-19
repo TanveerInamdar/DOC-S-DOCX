@@ -45,28 +45,54 @@ export default function Landing({ user }) {
                         )}
                     </div>
 
-                    {/* Demo logins card */}
-                    {!user && (
-                        <div className="glass-card p-6 max-w-md mx-auto">
-                            <h3 className="font-semibold text-dark-200 mb-4 text-lg">Demo accounts</h3>
-                            <div className="space-y-3 text-left">
-                                <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700/50">
-                                    <div>
-                                        <span className="font-medium text-brand-300">Doctor:</span>
-                                        <div className="text-sm text-dark-300">dr@demo.com / demo123</div>
-                                    </div>
-                                    <div className="w-2 h-2 bg-brand-400 rounded-full"></div>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700/50">
-                                    <div>
-                                        <span className="font-medium text-purple-300">Patient:</span>
-                                        <div className="text-sm text-dark-300">pat@demo.com / demo123</div>
-                                    </div>
-                                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                           {/* Demo logins card */}
+                           {!user && (
+                               <div className="glass-card p-6 max-w-2xl mx-auto">
+                                   <h3 className="font-semibold text-dark-200 mb-4 text-lg text-center">Demo Accounts</h3>
+                                   <div className="space-y-4">
+                                       {/* Doctor Account */}
+                                       <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                                           <div>
+                                               <span className="font-medium text-brand-300">Doctor:</span>
+                                               <div className="text-sm text-dark-300">dr@demo.com / demo123</div>
+                                           </div>
+                                           <div className="w-2 h-2 bg-brand-400 rounded-full"></div>
+                                       </div>
+                                       
+                                       {/* Patient Accounts */}
+                                       <div>
+                                           <div className="text-sm text-dark-400 font-medium mb-3">Patient Accounts:</div>
+                                           <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat@demo.com</div>
+                                                   <div className="text-dark-400">Alex Patient</div>
+                                               </div>
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat2@demo.com</div>
+                                                   <div className="text-dark-400">Sarah Johnson</div>
+                                               </div>
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat3@demo.com</div>
+                                                   <div className="text-dark-400">Michael Chen</div>
+                                               </div>
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat4@demo.com</div>
+                                                   <div className="text-dark-400">Emily Rodriguez</div>
+                                               </div>
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat5@demo.com</div>
+                                                   <div className="text-dark-400">James Wilson</div>
+                                               </div>
+                                               <div className="p-2 bg-slate-800/30 rounded border border-slate-700/50">
+                                                   <div className="text-purple-300 font-medium">pat6@demo.com</div>
+                                                   <div className="text-dark-400">Maria Garcia</div>
+                                               </div>
+                                           </div>
+                                           <div className="text-xs text-dark-500 text-center mt-2">All patients use password: demo123</div>
+                                       </div>
+                                   </div>
+                               </div>
+                           )}
                 </div>
 
                 {/* Feature grid */}

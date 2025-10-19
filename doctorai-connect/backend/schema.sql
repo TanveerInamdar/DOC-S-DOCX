@@ -37,11 +37,11 @@ CREATE TABLE IF NOT EXISTS appointments (
 INSERT OR IGNORE INTO users (id, email, password_plain, role, name) VALUES
   (1, 'dr@demo.com',  'demo123', 'doctor',  'Dr. Rivera'),
   (2, 'pat@demo.com', 'demo123', 'patient', 'Alex Patient'),
-  (3, 'patient2@demo.com', 'demo123', 'patient', 'Sarah Johnson'),
-  (4, 'patient3@demo.com', 'demo123', 'patient', 'Michael Chen'),
-  (5, 'patient4@demo.com', 'demo123', 'patient', 'Emily Rodriguez'),
-  (6, 'patient5@demo.com', 'demo123', 'patient', 'James Wilson'),
-  (7, 'patient6@demo.com', 'demo123', 'patient', 'Maria Garcia');
+  (3, 'pat2@demo.com', 'demo123', 'patient', 'Sarah Johnson'),
+  (4, 'pat3@demo.com', 'demo123', 'patient', 'Michael Chen'),
+  (5, 'pat4@demo.com', 'demo123', 'patient', 'Emily Rodriguez'),
+  (6, 'pat5@demo.com', 'demo123', 'patient', 'James Wilson'),
+  (7, 'pat6@demo.com', 'demo123', 'patient', 'Maria Garcia');
 
 INSERT OR IGNORE INTO doctors (id, user_id, full_name, specialization) VALUES
   (1, 1, 'Dr. Rivera', 'Internal Medicine');
