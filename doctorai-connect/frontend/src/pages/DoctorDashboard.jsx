@@ -88,11 +88,13 @@ export default function DoctorDashboard() {
   )
 
   return (
-    <div className="flex gap-4 h-[calc(100vh-120px)]">
+    <div className="flex gap-6 h-[calc(100vh-120px)] w-full">
       {/* Main Content Area */}
-      <div className="flex-1 grid md:grid-cols-3 gap-4 overflow-y-auto">
-        <div className="bg-white rounded-xl p-4 shadow h-fit">
-        <h2 className="font-semibold mb-3">Patients</h2>
+      <div className="flex-1 grid md:grid-cols-3 gap-6 overflow-y-auto">
+        <div className="bg-slate-100/90 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-slate-200/20 h-fit hover:shadow-xl transition-all duration-300 hover:bg-slate-100/95">
+        <h2 className="font-semibold text-lg mb-4 text-gray-800">
+          Patients
+        </h2>
         
         {/* Search Bar */}
         <div className="mb-4">
@@ -102,10 +104,10 @@ export default function DoctorDashboard() {
               placeholder="Search patients..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-slate-50/80 backdrop-blur-sm transition-all duration-200 hover:bg-slate-50 hover:shadow-md"
             />
             <svg 
-              className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" 
+              className="absolute left-3 top-3 h-5 w-5 text-gray-400" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -115,7 +117,7 @@ export default function DoctorDashboard() {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition-colors"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -124,7 +126,7 @@ export default function DoctorDashboard() {
             )}
           </div>
           {searchTerm && (
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 mt-2">
               Found {filteredPatients.length} patient{filteredPatients.length !== 1 ? 's' : ''}
             </p>
           )}
@@ -137,7 +139,7 @@ export default function DoctorDashboard() {
               {searchTerm && (
                 <button 
                   onClick={() => setSearchTerm('')}
-                  className="text-blue-600 hover:text-blue-700 text-xs mt-2"
+                  className="text-emerald-500 hover:text-emerald-600 text-xs mt-2 font-medium"
                 >
                   Clear search
                 </button>
@@ -146,10 +148,10 @@ export default function DoctorDashboard() {
           ) : (
             filteredPatients.map(p => (
             <li key={p.id}>
-              <button onClick={()=>load(p.id)} className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${selected===p.id?'bg-blue-600 text-white':'bg-gray-50 text-gray-900 hover:bg-gray-100'}`}>
+              <button onClick={()=>load(p.id)} className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02] ${selected===p.id?'bg-emerald-600 text-white shadow-lg scale-[1.02]':'bg-slate-50/80 text-gray-900 hover:bg-slate-100 hover:shadow-md border border-slate-200 hover:border-emerald-300'}`}>
                 <div className="flex flex-col">
-                  <span className="text-base">{p.full_name}</span>
-                  <span className={`text-xs mt-1 ${selected===p.id?'text-blue-100':'text-gray-500'}`}>DOB: {p.dob}</span>
+                  <span className="text-base font-semibold">{p.full_name}</span>
+                  <span className={`text-xs mt-1 ${selected===p.id?'text-emerald-100':'text-gray-500'}`}>DOB: {p.dob}</span>
                 </div>
               </button>
             </li>
@@ -158,17 +160,22 @@ export default function DoctorDashboard() {
         </ul>
       </div>
 
-      <div className="bg-white rounded-xl p-4 shadow md:col-span-2">
-        {!detail ? <p className="text-gray-500">Select a patient to view their profile.</p> : (
+      <div className="bg-slate-100/90 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-slate-200/20 md:col-span-2 hover:shadow-xl transition-all duration-300 hover:bg-slate-100/95">
+        {!detail ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">👤</div>
+            <p className="text-gray-400 text-lg">Select a patient to view their medical profile</p>
+          </div>
+        ) : (
           <>
             {/* Patient Header */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-6 mb-6">
+            <div className="bg-gradient-to-r from-emerald-100 to-teal-100 border border-emerald-200 rounded-xl p-6 mb-6 shadow-md hover:shadow-lg transition-all duration-300">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-1">{detail.patient.full_name}</h2>
                   <p className="text-sm text-gray-600">Date of Birth: <span className="font-medium">{detail.patient.dob}</span></p>
                 </div>
-                <div className="bg-white rounded-full p-4 shadow-md">
+                <div className="bg-gradient-to-br from-emerald-200 to-teal-200 rounded-full p-4 shadow-md hover:shadow-lg transition-all duration-300">
                   <span className="text-4xl">👤</span>
                 </div>
               </div>
@@ -177,8 +184,8 @@ export default function DoctorDashboard() {
             {/* Medical Profile Grid */}
             <div className="grid md:grid-cols-2 gap-4 mb-6">
               {/* Allergies Card */}
-              <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-300 rounded-xl p-5 shadow-sm">
-                <h3 className="font-bold text-red-900 flex items-center mb-3 text-lg">
+              <div className="bg-gradient-to-br from-red-100 to-pink-100 border border-red-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <h3 className="font-bold text-red-800 flex items-center mb-3 text-lg">
                   <span className="mr-2 text-2xl">⚠️</span> Known Allergies
                 </h3>
                 <div className="space-y-2">
@@ -192,15 +199,15 @@ export default function DoctorDashboard() {
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-red-700 italic">✓ No known allergies</p>
+                      <p className="text-sm text-red-700 italic">No known allergies</p>
                     );
                   })()}
                 </div>
               </div>
 
               {/* Current Medications Card */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-5 shadow-sm">
-                <h3 className="font-bold text-blue-900 flex items-center mb-3 text-lg">
+              <div className="bg-gradient-to-br from-emerald-100 to-teal-100 border border-emerald-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <h3 className="font-bold text-emerald-800 flex items-center mb-3 text-lg">
                   <span className="mr-2 text-2xl">💊</span> Current Medications
                 </h3>
                 <div className="space-y-2">
@@ -210,12 +217,12 @@ export default function DoctorDashboard() {
                     return latestMeds ? (
                       latestMeds.split(',').map((med, idx) => (
                         <div key={idx} className="flex items-center">
-                          <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                          <span className="text-sm font-medium text-blue-900">{med.trim()}</span>
+                          <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                          <span className="text-sm font-medium text-emerald-900">{med.trim()}</span>
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-blue-700 italic">No current medications</p>
+                      <p className="text-sm text-emerald-700 italic">No current medications</p>
                     );
                   })()}
                 </div>
@@ -297,42 +304,44 @@ export default function DoctorDashboard() {
       </div>
 
       {/* AI Chat Copilot Sidebar */}
-      <div className="w-96 bg-white rounded-xl shadow flex flex-col">
+      <div className="w-96 min-w-96 bg-slate-100/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/20 flex flex-col hover:shadow-xl transition-all duration-300 hover:bg-slate-100/95">
         {/* Chat Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-t-xl">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 rounded-t-xl shadow-lg">
           <h2 className="text-lg font-semibold flex items-center">
-            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
             AI Medical Copilot
           </h2>
-          <p className="text-xs text-purple-100 mt-1">Ask me anything about diagnosis, treatment, or patient care</p>
+          <p className="text-xs text-emerald-100 mt-1">Ask me anything about diagnosis, treatment, or patient care</p>
         </div>
 
         {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-slate-50 to-slate-100">
           {chatMessages.length === 0 ? (
             <div className="text-center text-gray-400 mt-8">
-              <svg className="w-16 h-16 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
+              <div className="w-16 h-16 mx-auto mb-3 text-gray-300 animate-bounce">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
               <p className="text-sm">Start a conversation</p>
               <p className="text-xs mt-2 px-4">Ask me to help with diagnoses, suggest treatments, or provide medical insights.</p>
             </div>
           ) : (
             chatMessages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-lg p-3 ${
+                <div className={`max-w-[85%] rounded-lg p-3 transition-all duration-200 hover:scale-[1.02] ${
                   msg.role === 'user' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-white border border-gray-200 text-gray-800'
+                    ? 'bg-emerald-600 text-white shadow-md hover:shadow-lg' 
+                    : 'bg-slate-50 border border-slate-200 text-gray-800 shadow-sm hover:shadow-md'
                 }`}>
                   {msg.role === 'assistant' && (
                     <div className="flex items-center mb-1">
-                      <svg className="w-4 h-4 mr-1 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 mr-1 text-emerald-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                       </svg>
-                      <span className="text-xs font-semibold text-purple-600">AI Copilot</span>
+                      <span className="text-xs font-semibold text-emerald-600">AI Copilot</span>
                     </div>
                   )}
                   <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -354,21 +363,21 @@ export default function DoctorDashboard() {
         </div>
 
         {/* Chat Input */}
-        <div className="p-4 border-t border-gray-200 bg-white rounded-b-xl">
+        <div className="p-4 border-t border-slate-200 bg-slate-100/80 backdrop-blur-sm rounded-b-xl">
           <div className="flex gap-2">
             <textarea
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask AI for medical guidance..."
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none transition-all duration-200 hover:border-emerald-400 focus:border-emerald-500 bg-slate-50"
               rows="2"
               disabled={isTyping}
             />
             <button
               onClick={sendChatMessage}
               disabled={isTyping || !chatInput.trim()}
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-emerald-600 text-white px-4 rounded-lg hover:bg-emerald-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
