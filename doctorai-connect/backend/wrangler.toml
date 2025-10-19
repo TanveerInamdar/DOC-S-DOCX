@@ -5,7 +5,7 @@ compatibility_date = "2024-12-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "doctorai"
-database_id = "doctorai-db"
+database_id = "bd5cf569-0684-41bc-b441-ae6fc66ba509"
 
 [ai]
 binding = "AI"

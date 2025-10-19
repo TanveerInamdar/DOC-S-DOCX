@@ -10,7 +10,15 @@ export default function DoctorHome({ user }) {
 
     useEffect(() => {
         // Load patient list for quick actions
-        api.get('/api/patients').then(r => setPatients(r.data.patients || [])).catch(()=>{})
+        console.log('DoctorHome: Fetching patients...')
+        api.get('/api/patients')
+            .then(r => {
+                console.log('DoctorHome: Patients loaded:', r.data.patients)
+                setPatients(r.data.patients || [])
+            })
+            .catch(err => {
+                console.error('DoctorHome: Failed to fetch patients:', err.response?.status, err.response?.data)
+            })
 
         // Try to restore last viewed patient from localStorage (set by dashboard)
         const pid = localStorage.getItem('last_patient_id')

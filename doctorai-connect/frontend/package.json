@@ -9,6 +9,7 @@
     "preview": "vite preview --port 5174"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.53.2",
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

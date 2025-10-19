@@ -13,6 +13,8 @@ export default function Login({ onLoggedIn }) {
     setErr('')
     try {
       const r = await api.post('/api/login', { email, password })
+      // Store user in localStorage for persistence
+      localStorage.setItem('currentUser', JSON.stringify(r.data.user))
       onLoggedIn?.(r.data.user)
       if (r.data.user.role === 'doctor') nav('/doctor')
       else nav('/patient')

@@ -8,7 +8,29 @@ export default function DoctorAISummary() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    api.get('/api/patients').then(r => setPatients(r.data.patients || [])).catch(()=>{})
+    // Check who is logged in
+    api.get('/api/me').then(r => {
+      console.log('Current user:', r.data.user)
+      if (!r.data.user) {
+        console.error('NOT LOGGED IN!')
+        return
+      }
+      if (r.data.user.role !== 'doctor') {
+        console.error('USER IS NOT A DOCTOR! Role:', r.data.user.role)
+        return
+      }
+      
+      // Fetch patients
+      console.log('Fetching patients...')
+      api.get('/api/patients')
+        .then(r => {
+          console.log('Patients response:', r.data)
+          setPatients(r.data.patients || [])
+        })
+        .catch(err => {
+          console.error('Failed to fetch patients:', err.response?.status, err.response?.data)
+        })
+    })
   }, [])
 
   const generateSummary = async () => {

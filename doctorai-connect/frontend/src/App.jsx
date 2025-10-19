@@ -15,12 +15,29 @@ export default function App() {
     const nav = useNavigate()
 
     useEffect(() => {
-        api.get('/api/me').then(r => setUser(r.data.user)).catch(() => {})
+        // Try to restore user from localStorage first
+        const savedUser = localStorage.getItem('currentUser')
+        if (savedUser) {
+            try {
+                setUser(JSON.parse(savedUser))
+            } catch (e) {
+                console.error('Failed to restore user from localStorage')
+            }
+        }
+        
+        // Also check with API
+        api.get('/api/me').then(r => {
+            setUser(r.data.user)
+            if (r.data.user) {
+                localStorage.setItem('currentUser', JSON.stringify(r.data.user))
+            }
+        }).catch(() => {})
     }, [])
 
     const logout = async () => {
         await api.post('/api/logout')
         setUser(null)
+        localStorage.removeItem('currentUser')
         nav('/')
     }
 
