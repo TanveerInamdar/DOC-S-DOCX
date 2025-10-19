@@ -1,56 +1,181 @@
-🩺 DOCS - Doctor AI App
+Skip to content
+Navigation Menu
+TanveerInamdar
+DOC-S-DOCX
 
-AI powered doctor patient platform for unified medical records and instant summaries.
+Type / to search
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+1
+Insights
+Settings
+DOC-S-DOCX
+/
+README.md
+in
+main
 
-DOCS enables doctors to securely access a patient’s complete medical history (appointments, notes, medications, allergies, and reports) across multiple clinics, while patients can view their history in a read only mode.
-Built for hackathon scale efficiency and extensibility on Cloudflare Workers, with AI summaries powered by Cloudflare Workers AI.
+Edit
 
-🚀 Features
+Preview
+Indent mode
 
-Dual Roles
+Spaces
+Indent size
 
-Doctor, full access to patient records, can add or edit appointments and notes.
+2
+Line wrap mode
 
-Patient, read only access to personal medical history.
+No wrap
+Editing README.md file contents
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+# DOCS DOCX — Doctor AI App
 
-AI Summary
+AI powered doctor patient platform for unified medical records and instant medical history summaries. DOCS DOCX enables doctors to securely access a patient’s complete medical history across multiple clinics while patients can view their history in a read only mode. The platform is built for hackathon scale efficiency on Cloudflare Workers, with AI summaries powered by Cloudflare Workers AI.
 
-Automatically summarizes all past appointments and notes for quick insights.
+---
 
-Secure Auth
+## 🚀 Features
 
-User sessions with cookie based authentication (optional, Clerk integration).
+### Dual Roles
+- **Doctor**: Full access to patient history, appointments, notes, and reports
+- **Patient**: Read only access to personal medical records
 
-View Reports
+### AI Summary
+- Automatically summarizes all past appointments and doctor notes for quick insights
 
-Patients and doctors can view uploaded lab or test reports.
+### Secure Auth
+- Cookie based authentication (optional Clerk integration)
 
-Extensible
+### View Reports
+- Doctors and patients can view uploaded lab or test reports (stored in R2)
 
-Designed for future integration with Gemini for OCR and ElevenLabs for text to speech.
+### Extensible
+- Architecture allows future additions like OCR and text to speech
 
-🧱 Tech Stack
-Layer	Tech
-Frontend	React + Vite
-Backend	Hono (Cloudflare Worker)
-Database	Cloudflare D1 (SQLite on edge)
-Storage	Cloudflare R2
-AI	Cloudflare Workers AI (@cf/meta/llama-3.1-8b-instruct)
-Auth (optional)	Clerk
-Runtime	Local dev with Wrangler
-🏗️ Architecture Overview
+---
+
+## 🧱 Tech Stack
+
+| Layer     | Tech |
+|-----------|------|
+| Frontend  | React + Vite |
+| Backend   | Hono (Cloudflare Worker) |
+| Database  | Cloudflare D1 (SQLite on the edge) |
+| Storage   | Cloudflare R2 |
+| AI        | Cloudflare Workers AI (`@cf/meta/llama-3.1-8b-instruct`) |
+| Auth (optional) | Clerk |
+| Dev Tooling | Wrangler |
+
+---
+
+## 🏗️ Architecture Overview
+
+```text
 [ React (Vite) UI ]
         |
         v
-[ Hono API on Cloudflare Worker ]
+[ Hono API — Cloudflare Worker ]
         |
- +------+-------+
- |              |
- v              v
-[D1 Database]  [R2 Storage]
+  +-----+------+
+  |            |
+  v            v
+[D1 Database] [R2 Storage]
         |
         v
 [Workers AI] -> Summarizes history and notes
+
 
 ⚙️ Local Setup
 1. Clone the repo
@@ -62,14 +187,14 @@ npm install
 
 3. Add environment variables
 
-Create a .env file in the project root:
+Create a .env file:
 
 CLERK_SECRET_KEY=<your_clerk_key_if_using_auth>
 CORS_ORIGINS=http://localhost:5173
 JWT_SECRET=local_dev_secret
 
 4. Configure wrangler.toml
-name = "docs"
+name = "docs-docx"
 compatibility_date = "2024-10-01"
 
 [vars]
@@ -82,63 +207,8 @@ database_id = "<your_d1_id>"
 
 [[r2_buckets]]
 binding = "R2"
-bucket_name = "docs-reports"
-
-5. Start backend
-npx wrangler dev
-
-
-This starts your Cloudflare Worker at http://127.0.0.1:8787
-
-6. Start frontend
-cd frontend
-npm run dev
-
-
-Open http://localhost:5173
-
-🧪 API Overview
-Endpoint	Method	Description
-/api/health	GET	Health check
-/api/patients/me	GET	Fetch current user record
-/api/appointments	POST	Add new appointment
-/api/summary/:id	GET	Get AI medical summary
-/api/reports	GET	List test reports
-🧠 AI Summary Flow
-
-Collect all past appointments, doctor notes, medications, and allergies from D1.
-
-Combine and send them as a text prompt to Workers AI (Llama 3.1).
-
-Store the generated summary back into D1 or cache for reuse.
-
-Display it under the AI Summary tab in the doctor dashboard.
-
-🪄 Future Enhancements
-
-OCR test reports using Gemini Flash 2.0.
-
-Text to speech doctor notes via ElevenLabs API.
-
-Secure federated login with Clerk or Cloudflare Access.
-
-Notifications via Cloudflare Queues.
-
-🧰 Developer Notes
-
-Backend framework, Hono with cookie based sessions.
-
-AI calls, via env.AI.run using Workers AI bindings.
-
-Database, uses D1 SQL commands (c.env.DB.prepare().bind().run()).
-
-Test locally, Workers emulate Cloudflare APIs via wrangler dev.
-
-Deployment, npx wrangler deploy.
-
-🧾 License
-
-MIT License © 2025 Team DOCS
-Built at HackTX 2025 🎓
-
-🙌 Contributors
+Built at HackTX 2025
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+No file chosen
+Attach files by dragging & dropping, selecting or pasting them.
+New File at / · TanveerInamdar/DOC-S-DOCX 
