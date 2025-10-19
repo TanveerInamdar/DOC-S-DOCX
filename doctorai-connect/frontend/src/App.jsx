@@ -78,7 +78,7 @@ export default function App() {
                     <Route path="/doctor/records" element={<DoctorRecords />} />
 
                     {/* Patient route */}
-                    <Route path="/patient" element={<PatientDashboard />} />
+                    <Route path="/patient" element={<PatientDashboard user={user} />} />
                 </Routes>
             </div>
         </div>

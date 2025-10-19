@@ -8,29 +8,17 @@ export default function DoctorAISummary() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // Check who is logged in
-    api.get('/api/me').then(r => {
-      console.log('Current user:', r.data.user)
-      if (!r.data.user) {
-        console.error('NOT LOGGED IN!')
-        return
-      }
-      if (r.data.user.role !== 'doctor') {
-        console.error('USER IS NOT A DOCTOR! Role:', r.data.user.role)
-        return
-      }
-      
-      // Fetch patients
-      console.log('Fetching patients...')
-      api.get('/api/patients')
-        .then(r => {
-          console.log('Patients response:', r.data)
-          setPatients(r.data.patients || [])
-        })
-        .catch(err => {
-          console.error('Failed to fetch patients:', err.response?.status, err.response?.data)
-        })
-    })
+    // Fetch patients directly - the backend will handle authentication
+    console.log('DoctorAISummary: Fetching patients...')
+    api.get('/api/patients')
+      .then(r => {
+        console.log('DoctorAISummary: Patients loaded:', r.data.patients)
+        setPatients(r.data.patients || [])
+      })
+      .catch(err => {
+        console.error('DoctorAISummary: Failed to fetch patients:', err.response?.status, err.response?.data)
+        setPatients([])
+      })
   }, [])
 
   const generateSummary = async () => {
@@ -73,20 +61,28 @@ export default function DoctorAISummary() {
               {/* Patient Selection */}
               <div>
                 <label className="block text-sm font-medium text-dark-300 mb-2">
-                  Select Patient
+                  Select Patient {patients.length > 0 && `(${patients.length} available)`}
                 </label>
                 <select
                   className="w-full bg-slate-800/50 border border-slate-600 rounded-xl px-4 py-3 text-dark-100 brand-ring transition-all duration-200 hover:border-slate-500 focus:border-brand-500"
                   value={selectedPatient}
                   onChange={e => setSelectedPatient(e.target.value)}
+                  style={{ colorScheme: 'dark' }}
                 >
-                  <option value="">Choose a patient</option>
-                  {patients.map(patient => (
-                    <option key={patient.id} value={patient.id}>
-                      {patient.full_name} (DOB: {patient.dob})
-                    </option>
-                  ))}
+                  <option value="" style={{ backgroundColor: '#1e293b', color: '#f1f5f9' }}>Choose a patient</option>
+                  {patients.length === 0 ? (
+                    <option disabled style={{ backgroundColor: '#1e293b', color: '#64748b' }}>No patients available</option>
+                  ) : (
+                    patients.map(patient => (
+                      <option key={patient.id} value={patient.id} style={{ backgroundColor: '#1e293b', color: '#f1f5f9' }}>
+                        {patient.full_name} (DOB: {patient.dob})
+                      </option>
+                    ))
+                  )}
                 </select>
+                {patients.length === 0 && (
+                  <p className="text-sm text-dark-400 mt-2">No patients found. Make sure you're logged in as a doctor.</p>
+                )}
               </div>
 
               {/* Generate Button */}
