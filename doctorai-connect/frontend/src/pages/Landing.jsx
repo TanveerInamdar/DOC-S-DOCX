@@ -17,15 +17,23 @@ export default function Landing({ user }) {
                         Doctors can add and edit appointments. Patients can view their records.
                     </p>
 
-                    <div className="flex items-center justify-center gap-4 mb-8">
-                        {!user && (
-                            <Link
-                                to="/login"
-                                className="btn-primary px-8 py-3 text-lg"
-                            >
-                                Sign in to continue
-                            </Link>
-                        )}
+                           <div className="flex items-center justify-center gap-4 mb-8">
+                               {!user && (
+                                   <>
+                                       <Link
+                                           to="/login"
+                                           className="btn-secondary px-8 py-3 text-lg"
+                                       >
+                                           Sign In
+                                       </Link>
+                                       <Link
+                                           to="/signup"
+                                           className="btn-primary px-8 py-3 text-lg"
+                                       >
+                                           Sign Up
+                                       </Link>
+                                   </>
+                               )}
 
                         {user?.role === 'doctor' && (
                             <Link

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 import DoctorDashboard from './pages/DoctorDashboard'
 import PatientDashboard from './pages/PatientDashboard'
 import Landing from './pages/Landing'
@@ -60,7 +61,10 @@ export default function App() {
                             {user ? (
                                 <button onClick={logout} className="btn-secondary">Logout</button>
                             ) : (
-                                <Link to="/login" className="btn-primary">Login</Link>
+                                <>
+                                    <Link to="/login" className="text-dark-300 hover:text-brand-400 transition-colors font-medium px-3 py-1 rounded-lg hover:bg-dark-700/50">Login</Link>
+                                    <Link to="/signup" className="btn-primary">Sign Up</Link>
+                                </>
                             )}
                         </nav>
                     </div>
@@ -69,6 +73,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Landing user={user} />} />
                     <Route path="/login" element={<Login onLoggedIn={setUser} />} />
+                    <Route path="/signup" element={<Signup onLoggedIn={setUser} />} />
 
                     {/* Doctor routes */}
                     <Route path="/doctor" element={<DoctorHome user={user} />} />

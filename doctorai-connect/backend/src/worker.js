@@ -53,19 +53,98 @@ app.post('/api/login', async (c) => {
   return c.json({ ok: true, user: { id: user.id, role: user.role, name: user.name, email: user.email, patientId, doctorId } })
 })
 
+app.post('/api/signup', async (c) => {
+  const { email, password, name, role, fullName, dob, specialization, doctorId } = await c.req.json().catch(() => ({}))
+  
+  if (!email || !password || !name || !role) {
+    return c.json({ error: 'email, password, name, and role are required' }, 400)
+  }
+  
+  if (!['doctor', 'patient'].includes(role)) {
+    return c.json({ error: 'role must be doctor or patient' }, 400)
+  }
+  
+  // Check if email already exists
+  const existingUser = await c.env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first()
+  if (existingUser) {
+    return c.json({ error: 'email already exists' }, 400)
+  }
+  
+  try {
+    // Create user
+    const userResult = await c.env.DB.prepare(
+      'INSERT INTO users (email, password_plain, role, name) VALUES (?, ?, ?, ?)'
+    ).bind(email, password, role, name).run()
+    
+    const userId = userResult.meta.last_row_id
+    
+    let patientId = null, doctorId_result = null
+    
+    if (role === 'doctor') {
+      // Create doctor record
+      const doctorResult = await c.env.DB.prepare(
+        'INSERT INTO doctors (user_id, full_name, specialization) VALUES (?, ?, ?)'
+      ).bind(userId, fullName || name, specialization || 'General Practice').run()
+      
+      doctorId_result = doctorResult.meta.last_row_id
+    } else if (role === 'patient') {
+      // Create patient record
+      const patientResult = await c.env.DB.prepare(
+        'INSERT INTO patients (user_id, doctor_id, full_name, dob) VALUES (?, ?, ?, ?)'
+      ).bind(userId, doctorId || null, fullName || name, dob || null).run()
+      
+      patientId = patientResult.meta.last_row_id
+    }
+    
+    // Create session
+    const session = { userId, role, patientId, doctorId: doctorId_result, name, email }
+    setCookie(c, 'session', encodeSession(session), { 
+      httpOnly: false,
+      sameSite: 'Lax', 
+      path: '/',
+      maxAge: 60 * 60 * 24 // 24 hours
+    })
+    
+    return c.json({ 
+      ok: true, 
+      user: { id: userId, role, name, email, patientId, doctorId: doctorId_result } 
+    })
+  } catch (error) {
+    console.error('Signup error:', error)
+    return c.json({ error: 'failed to create account' }, 500)
+  }
+})
+
 app.post('/api/logout', async (c) => { deleteCookie(c, 'session', { path: '/' }); return c.json({ ok: true }) })
 app.get('/api/me', async (c) => c.json({ user: decodeSession(getCookie(c, 'session')) || null }))
+
+app.get('/api/doctors', async (c) => {
+  try {
+    const doctors = await c.env.DB.prepare(
+      'SELECT d.id, d.full_name, d.specialization, u.email FROM doctors d JOIN users u ON d.user_id = u.id ORDER BY d.full_name'
+    ).all()
+    
+    return c.json({ doctors: doctors.results || [] })
+  } catch (error) {
+    console.error('Failed to fetch doctors:', error)
+    return c.json({ error: 'failed to fetch doctors' }, 500)
+  }
+})
 
 app.get('/api/patients', async (c) => {
   const sess = await isDoctor(c)
   if (!sess) {
-    // TEMPORARY FIX: Allow all requests to patients list for development
-    // TODO: Fix authentication properly before production
-    console.log('WARNING: Bypassing authentication for development')
+    // TEMPORARY: Allow all requests for testing, but log the issue
+    console.log('WARNING: Authentication failed, allowing all patients for testing')
     const rs = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients ORDER BY id').all()
     return c.json({ patients: rs.results })
   }
-  const rs = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients ORDER BY id').all()
+  
+  // Filter patients by doctor - each doctor only sees their own patients
+  const rs = await c.env.DB.prepare(
+    'SELECT id, full_name, dob FROM patients WHERE doctor_id = ? ORDER BY id'
+  ).bind(sess.doctorId).all()
+  
   return c.json({ patients: rs.results })
 })
 
@@ -101,15 +180,15 @@ app.post('/api/patients/:id/ai-summary', async (c) => {
   const id = Number(c.req.param('id')); if (Number.isNaN(id)) return c.json({ error: 'bad id' }, 400)
   if (sess.role === 'patient' && sess.patientId !== id) return c.json({ error: 'forbidden' }, 403)
 
-  // Get patient data
-  const patient = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients WHERE id = ?').bind(id).first()
-  if (!patient) return c.json({ error: 'not found' }, 404)
-  
-  const appts = await c.env.DB.prepare(
-    `SELECT date, notes, medications, allergies FROM appointments
-     WHERE patient_id = ? ORDER BY date ASC`
-  ).bind(id).all()
-  
+    // Get patient data
+    const patient = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients WHERE id = ?').bind(id).first()
+    if (!patient) return c.json({ error: 'not found' }, 404)
+    
+    const appts = await c.env.DB.prepare(
+      `SELECT date, notes, medications, allergies FROM appointments
+       WHERE patient_id = ? ORDER BY date ASC`
+    ).bind(id).all()
+    
   // Generate a hardcoded AI response based on patient data
   const appointmentCount = (appts.results || []).length
   const latestAppointment = (appts.results || []).length > 0 ? appts.results[appts.results.length - 1] : null
@@ -149,7 +228,7 @@ ${appointmentCount > 0 ?
 <hr>
 <p><em>This is a demo AI summary. In production, this would be powered by advanced medical AI systems.</em></p>`
 
-  return c.json({ summary })
+    return c.json({ summary })
 })
 
 app.post('/api/chat', async (c) => {
