@@ -42,33 +42,28 @@ export default function App() {
     }
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '2s'}}></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse" style={{animationDelay: '4s'}}></div>
-            </div>
-            
-            <div className="relative z-10 p-4">
-                <header className="flex items-center justify-between mb-6 bg-slate-100/80 backdrop-blur-md rounded-xl p-4 shadow-lg border border-slate-200/20 hover:shadow-xl transition-all duration-300">
-                    <Link to="/" className="text-2xl font-bold text-gray-800 hover:text-emerald-600 transition-colors">
-                        DoctorAI Connect
-                    </Link>
-                    <nav className="flex gap-4">
-                        {user?.role === 'doctor' && (
-                            <>
-                                <Link to="/doctor" className="text-gray-600 hover:text-emerald-600 transition-all duration-200 font-medium px-3 py-1 rounded-lg hover:bg-emerald-50">Doctor</Link>
-                                <Link to="/doctor/patients" className="text-gray-600 hover:text-emerald-600 transition-all duration-200 font-medium px-3 py-1 rounded-lg hover:bg-emerald-50">Patients</Link>
-                            </>
-                        )}
-                        {user?.role === 'patient' && <Link to="/patient" className="text-gray-600 hover:text-emerald-600 transition-all duration-200 font-medium px-3 py-1 rounded-lg hover:bg-emerald-50">Patient</Link>}
-                        {user ? (
-                            <button onClick={logout} className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all duration-200 hover:shadow-md">Logout</button>
-                        ) : (
-                            <Link to="/login" className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Login</Link>
-                        )}
-                    </nav>
+        <div className="min-h-screen">
+            <div className="max-w-7xl mx-auto px-6 py-8">
+                <header className="glass-card mb-8 p-4">
+                    <div className="flex items-center justify-between">
+                        <Link to="/" className="text-xl font-semibold text-dark-100 hover:text-brand-400 transition-colors">
+                            DoctorAI Connect
+                        </Link>
+                        <nav className="flex gap-4">
+                            {user?.role === 'doctor' && (
+                                <>
+                                    <Link to="/doctor" className="text-dark-300 hover:text-brand-400 transition-colors font-medium px-3 py-1 rounded-lg hover:bg-dark-700/50">Doctor</Link>
+                                    <Link to="/doctor/patients" className="text-dark-300 hover:text-brand-400 transition-colors font-medium px-3 py-1 rounded-lg hover:bg-dark-700/50">Patients</Link>
+                                </>
+                            )}
+                            {user?.role === 'patient' && <Link to="/patient" className="text-dark-300 hover:text-brand-400 transition-colors font-medium px-3 py-1 rounded-lg hover:bg-dark-700/50">Patient</Link>}
+                            {user ? (
+                                <button onClick={logout} className="btn-secondary">Logout</button>
+                            ) : (
+                                <Link to="/login" className="btn-primary">Login</Link>
+                            )}
+                        </nav>
+                    </div>
                 </header>
 
                 <Routes>
