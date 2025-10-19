@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const app = new Hono()
 
@@ -180,6 +181,7 @@ app.post('/api/patients/:id/ai-summary', async (c) => {
   const id = Number(c.req.param('id')); if (Number.isNaN(id)) return c.json({ error: 'bad id' }, 400)
   if (sess.role === 'patient' && sess.patientId !== id) return c.json({ error: 'forbidden' }, 403)
 
+  try {
     // Get patient data
     const patient = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients WHERE id = ?').bind(id).first()
     if (!patient) return c.json({ error: 'not found' }, 404)
@@ -189,46 +191,61 @@ app.post('/api/patients/:id/ai-summary', async (c) => {
        WHERE patient_id = ? ORDER BY date ASC`
     ).bind(id).all()
     
-  // Generate a hardcoded AI response based on patient data
-  const appointmentCount = (appts.results || []).length
-  const latestAppointment = (appts.results || []).length > 0 ? appts.results[appts.results.length - 1] : null
-  
-  // Extract current medications and allergies from latest appointment
-  const currentMeds = latestAppointment?.medications || 'None documented'
-  const knownAllergies = [...new Set((appts.results || []).map(a => a.allergies).filter(Boolean))].join(', ') || 'None documented'
-  
-  const summary = `<p><strong>Clinical Summary for ${patient.full_name}</strong></p>
+    // Prepare data for Workers AI
+    const appointmentCount = (appts.results || []).length
+    const appointmentsData = (appts.results || []).map(apt => ({
+      date: apt.date,
+      notes: apt.notes,
+      medications: apt.medications,
+      allergies: apt.allergies
+    }))
+    
+    // Use Cloudflare Workers AI for patient summary
+    const prompt = `You are a medical AI assistant. Generate a comprehensive clinical summary for the following patient:
 
-<p>📊 <strong>Patient Overview:</strong><br>
-• <strong>Age:</strong> ${new Date().getFullYear() - new Date(patient.dob).getFullYear()} years old<br>
-• <strong>Total Visits:</strong> ${appointmentCount} documented appointments<br>
-• <strong>Last Visit:</strong> ${latestAppointment?.date || 'No recent visits'}</p>
+Patient Information:
+- Name: ${patient.full_name}
+- Date of Birth: ${patient.dob}
+- Age: ${new Date().getFullYear() - new Date(patient.dob).getFullYear()} years old
 
-<p>💊 <strong>Current Medications:</strong><br>
-${currentMeds}</p>
+Appointment History (${appointmentCount} total visits):
+${appointmentsData.map((apt, i) => `
+Visit ${i + 1} (${apt.date}):
+- Notes: ${apt.notes || 'None'}
+- Medications: ${apt.medications || 'None'}
+- Allergies: ${apt.allergies || 'None'}
+`).join('')}
 
-<p>⚠️ <strong>Known Allergies:</strong><br>
-${knownAllergies}</p>
+Please provide a professional medical summary that includes:
+1. Patient overview and demographics
+2. Current medications and known allergies
+3. Clinical assessment based on visit history
+4. Evidence-based recommendations for ongoing care
+5. Any red flags or areas requiring attention
 
-<p>📈 <strong>Clinical Assessment:</strong><br>
-${appointmentCount > 0 ? 
-  `Patient demonstrates ${appointmentCount > 3 ? 'regular' : 'intermittent'} healthcare engagement with ${appointmentCount} documented visits. ` +
-  `Current medication regimen appears appropriate for documented conditions. ` +
-  `No critical allergies requiring immediate attention noted. Overall clinical trajectory appears stable.` :
-  'Limited medical history available. Recommend comprehensive initial assessment and baseline documentation.'
-}</p>
+Format the response in HTML with proper medical terminology and professional formatting. Include appropriate medical disclaimers.`
 
-<p>🎯 <strong>Recommendations:</strong><br>
-• Continue current medication regimen as prescribed<br>
-• Schedule regular follow-up appointments<br>
-• Monitor for any new symptoms or medication side effects<br>
-• Maintain updated allergy documentation<br>
-• Consider preventive care measures based on age and risk factors</p>
+    // Use Cloudflare Workers AI binding
+    const response = await c.env.AI.run('@cf/meta/llama-2-7b-chat-int8', {
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a medical AI assistant helping healthcare professionals generate clinical summaries.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ]
+    })
 
-<hr>
-<p><em>This is a demo AI summary. In production, this would be powered by advanced medical AI systems.</em></p>`
+    const summary = response.response || 'Unable to generate summary at this time.'
 
     return c.json({ summary })
+  } catch (error) {
+    console.error('Workers AI summary error:', error)
+    return c.json({ error: 'Failed to generate AI summary' }, 500)
+  }
 })
 
 app.post('/api/chat', async (c) => {
@@ -245,126 +262,33 @@ app.post('/api/chat', async (c) => {
       return c.json({ error: 'Message is required' }, 400)
     }
 
-    // Generate a medical assistant response based on the message
-    const lowerMessage = message.toLowerCase()
+    // Initialize Gemini AI
+    const genAI = new GoogleGenerativeAI(c.env.GEMINI_API_KEY)
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
     
-    let aiResponse = ''
+    // Build context for the AI
+    let contextPrompt = `You are a medical AI assistant helping healthcare professionals with clinical decision support. 
     
-    // Medical diagnosis and symptoms
-    if (lowerMessage.includes('diagnosis') || lowerMessage.includes('symptom') || lowerMessage.includes('condition')) {
-      aiResponse = `<p>Based on the symptoms described, I recommend considering the following differential diagnoses:</p>
+User Question: ${message}
 
-<p>🔍 <strong>Primary Considerations:</strong><br>
-• Review patient's vital signs and physical examination findings<br>
-• Consider common conditions based on age, gender, and risk factors<br>
-• Evaluate for red flag symptoms requiring immediate attention</p>
+${context ? `Current Patient Context: ${context}` : ''}
 
-<p>📋 <strong>Next Steps:</strong><br>
-• Order appropriate diagnostic tests (labs, imaging, etc.)<br>
-• Consider specialist consultation if needed<br>
-• Document findings thoroughly in patient record<br>
-• Schedule appropriate follow-up</p>
+${history && history.length > 0 ? `Previous conversation history: ${JSON.stringify(history.slice(-5))}` : ''}
 
-<p>⚠️ <strong>Important:</strong> This is a demo response. Always rely on clinical judgment, physical examination, and appropriate diagnostic testing for accurate diagnosis.</p>`
+Please provide a helpful, evidence-based medical response. Include:
+- Clinical considerations
+- Evidence-based recommendations
+- Important disclaimers about AI assistance
 
-    // Treatment and medication questions
-    } else if (lowerMessage.includes('treatment') || lowerMessage.includes('medication') || lowerMessage.includes('therapy')) {
-      aiResponse = `<p>For treatment recommendations, consider these evidence-based approaches:</p>
+CRITICAL: Respond ONLY in plain text. Do NOT use HTML tags, markdown, or any formatting. Use simple line breaks and dashes (-) for bullet points. Keep responses under 200 words.`
 
-<p>💊 <strong>Medication Considerations:</strong><br>
-• Review patient's current medications and allergies<br>
-• Check for drug interactions<br>
-• Consider patient's age, weight, and comorbidities<br>
-• Start with first-line treatments when appropriate</p>
-
-<p>📚 <strong>Treatment Guidelines:</strong><br>
-• Follow established clinical guidelines for the condition<br>
-• Consider patient preferences and values<br>
-• Monitor for treatment response and side effects<br>
-• Adjust therapy based on patient response</p>
-
-<p>🔄 <strong>Follow-up Planning:</strong><br>
-• Schedule appropriate monitoring visits<br>
-• Set clear treatment goals with the patient<br>
-• Document treatment plan and rationale</p>
-
-<p>⚠️ <strong>Important:</strong> Always verify medication dosages and contraindications before prescribing.</p>`
-
-    // General medical advice
-    } else if (lowerMessage.includes('advice') || lowerMessage.includes('recommendation') || lowerMessage.includes('guidance')) {
-      aiResponse = `<p>I'm here to assist with clinical decision-making. Here are some general recommendations:</p>
-
-<p>🎯 <strong>Clinical Decision Support:</strong><br>
-• Review patient's complete medical history<br>
-• Consider current evidence-based guidelines<br>
-• Evaluate risk-benefit ratios for interventions<br>
-• Document clinical reasoning clearly</p>
-
-<p>📊 <strong>Patient Management:</strong><br>
-• Ensure comprehensive documentation<br>
-• Consider patient education needs<br>
-• Plan appropriate follow-up care<br>
-• Coordinate with other healthcare providers as needed</p>
-
-<p>🔍 <strong>Quality Assurance:</strong><br>
-• Double-check critical values and results<br>
-• Verify patient identification<br>
-• Ensure informed consent when appropriate<br>
-• Maintain patient confidentiality</p>
-
-<p>⚠️ <strong>Important:</strong> This is a demo response. Always use clinical judgment and consult appropriate resources for patient care decisions.</p>`
-
-    // Emergency or urgent care
-    } else if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent') || lowerMessage.includes('critical')) {
-      aiResponse = `<p>🚨 <strong>URGENT MEDICAL SITUATION DETECTED</strong></p>
-
-<p><strong>Immediate Actions Required:</strong><br>
-• Assess patient's airway, breathing, and circulation (ABCs)<br>
-• Check vital signs and level of consciousness<br>
-• Consider immediate life-saving interventions<br>
-• Activate emergency response if needed</p>
-
-<p><strong>Red Flag Symptoms to Consider:</strong><br>
-• Chest pain, shortness of breath<br>
-• Severe headache, altered mental status<br>
-• Severe abdominal pain<br>
-• Signs of shock or severe bleeding</p>
-
-<p><strong>Next Steps:</strong><br>
-• Stabilize patient immediately<br>
-• Call for appropriate emergency assistance<br>
-• Document all interventions and patient responses<br>
-• Notify appropriate medical team members</p>
-
-<p>⚠️ <strong>CRITICAL:</strong> This is a demo response. In real emergencies, follow established emergency protocols and call for immediate medical assistance.</p>`
-
-    // Default response for other queries
-    } else {
-      aiResponse = `<p>Thank you for your question. As your AI medical assistant, I'm here to help with:</p>
-
-<p>🩺 <strong>Clinical Support Areas:</strong><br>
-• Differential diagnosis considerations<br>
-• Treatment planning and medication guidance<br>
-• Evidence-based practice recommendations<br>
-• Patient management strategies</p>
-
-<p>📋 <strong>How I Can Help:</strong><br>
-• Review patient data and provide clinical insights<br>
-• Suggest diagnostic approaches<br>
-• Recommend treatment options<br>
-• Assist with documentation and follow-up planning</p>
-
-${context ? `<p>📊 <strong>Current Patient Context:</strong> ${context}</p>` : ''}
-
-${history && history.length > 0 ? `<p>💬 <strong>Conversation History:</strong> I can see we've been discussing related topics.</p>` : ''}
-
-<p>⚠️ <strong>Important:</strong> This is a demo AI assistant. Always use clinical judgment and consult appropriate medical resources for patient care decisions.</p>`
-
-    }
+    const result = await model.generateContent(contextPrompt)
+    const response = await result.response
+    const aiResponse = response.text()
 
     return c.json({ response: aiResponse })
   } catch (error) {
-    console.error('Chat error:', error)
+    console.error('Gemini chat error:', error)
     return c.json({ error: error.message || 'Failed to get chat response' }, 500)
   }
 })

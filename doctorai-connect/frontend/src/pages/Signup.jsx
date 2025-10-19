@@ -92,7 +92,7 @@ export default function Signup({ onLoggedIn }) {
           <div className="glass-card p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-dark-100 mb-2">Create Account</h1>
-              <p className="text-dark-300">Join DoctorAI Connect as a doctor or patient</p>
+              <p className="text-dark-300">Join DOC'S DOCX as a doctor or patient</p>
             </div>
             
             <form onSubmit={submit} className="space-y-6">

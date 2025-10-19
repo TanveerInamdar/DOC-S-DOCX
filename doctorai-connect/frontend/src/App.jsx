@@ -44,11 +44,11 @@ export default function App() {
 
     return (
         <div className="min-h-screen">
-            <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="max-w-[95vw] mx-auto px-6 py-8">
                 <header className="glass-card mb-8 p-4">
                     <div className="flex items-center justify-between">
                         <Link to="/" className="text-xl font-semibold text-dark-100 hover:text-brand-400 transition-colors">
-                            DoctorAI Connect
+                            DOC'S DOCX
                         </Link>
                         <nav className="flex gap-4">
                             {user?.role === 'doctor' && (

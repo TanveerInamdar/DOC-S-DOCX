@@ -35,7 +35,7 @@ export default function AddAppointment() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-[90vw] mx-auto">
       <div className="bg-white rounded-xl p-6 shadow">
         <h1 className="text-2xl font-semibold mb-6">Add New Appointment</h1>
         

@@ -5,12 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49be4924-37e0-40ef-8f2e-a3433cf1babf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/e8227d11d72d7bd843e25e634f4d0d857467a934f46a47282a20dc9670584ff1.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/e8227d11d72d7bd843e25e634f4d0d857467a934f46a47282a20dc9670584ff1.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/src/worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/src/worker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/wrangler.toml" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/wrangler.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/axios.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/axios.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-4W2RIJ36.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-4W2RIJ36.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-4W2RIJ36.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-4W2RIJ36.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-G3PMV62Z.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-G3PMV62Z.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-G3PMV62Z.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-G3PMV62Z.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-QRULMDK5.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-QRULMDK5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-QRULMDK5.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/chunk-QRULMDK5.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-dom_client.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-dom_client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-dom_client.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-dom_client.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-router-dom.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-router-dom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-router-dom.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react-router-dom.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/react.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/AddAppointment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/AddAppointment.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorAISummary.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorAISummary.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorRecords.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorRecords.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Landing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Landing.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Signup.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,20 +62,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/HackTX/PATK&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/HackTXD2/PAKT",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\HackTX\PATK\doctorai-connect\frontend\src\pages" />
@@ -62,7 +85,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-337b0a7a993a-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.19416.19" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
       </set>
     </attachedChunks>
   </component>
@@ -77,6 +100,7 @@
       <workItem from="1760844761449" duration="3219000" />
       <workItem from="1760850269651" duration="4127000" />
       <workItem from="1760857082838" duration="3739000" />
+      <workItem from="1760879884539" duration="7247000" />
     </task>
     <servers />
   </component>

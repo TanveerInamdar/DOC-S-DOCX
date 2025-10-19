@@ -90,7 +90,7 @@ export default function DoctorDashboard() {
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
       {/* Patient Sidebar - Compact Dense Style */}
-      <div className="w-full lg:w-80 glass-card p-4 h-fit lg:h-auto lg:order-1">
+      <div className="w-full lg:w-96 glass-card p-4 h-fit lg:h-auto lg:order-1">
         <h2 className="font-semibold text-lg mb-4 text-dark-100">
           Patients
         </h2>
@@ -363,7 +363,7 @@ export default function DoctorDashboard() {
       </div>
 
       {/* AI Copilot Panel - Floating Style */}
-      <div className="w-full lg:w-88 glass-card flex flex-col lg:sticky lg:top-6 lg:order-3">
+      <div className="w-full lg:w-96 glass-card flex flex-col lg:sticky lg:top-6 lg:order-3">
         {/* Chat Header */}
         <div className="bg-gradient-to-r from-brand-600 to-brand-700 text-white p-4 rounded-t-2xl">
           <h2 className="text-lg font-semibold flex items-center">

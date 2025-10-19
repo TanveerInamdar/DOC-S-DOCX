@@ -10,7 +10,7 @@ export default function Landing({ user }) {
                 {/* Hero Section */}
                 <div className="glass-card p-8 md:p-12 text-center mb-8">
                     <h1 className="text-4xl md:text-5xl font-bold text-dark-100 mb-4">
-                        DoctorAI Connect
+                        DOC'S DOCX
                     </h1>
                     <p className="text-lg text-dark-300 max-w-2xl mx-auto mb-8">
                         A simple doctor and patient portal with AI summaries of medical history.

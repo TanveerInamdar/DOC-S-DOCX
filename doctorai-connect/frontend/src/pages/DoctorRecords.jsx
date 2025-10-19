@@ -37,7 +37,7 @@ export default function DoctorRecords() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-[90vw] mx-auto">
       <div className="bg-white rounded-xl p-6 shadow">
         <h1 className="text-2xl font-semibold mb-6">Patient Records</h1>
         
