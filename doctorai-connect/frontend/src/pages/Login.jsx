@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../api'
 
 export default function Login({ onLoggedIn }) {
@@ -24,20 +24,95 @@ export default function Login({ onLoggedIn }) {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
-      <h1 className="text-lg font-semibold mb-4">Login</h1>
-      <form onSubmit={submit} className="space-y-3">
-        <div>
-          <label className="block text-sm mb-1">Email</label>
-          <input className="w-full border rounded px-3 py-2" value={email} onChange={e=>setEmail(e.target.value)} />
+    <div className="min-h-screen flex flex-col">
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center px-6 py-8">
+        <div className="w-full max-w-md">
+          {/* Login Card */}
+          <div className="glass-card p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-dark-100 mb-2">Welcome Back</h1>
+              <p className="text-dark-300">Sign in to access your dashboard</p>
+            </div>
+            
+            <form onSubmit={submit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-dark-300 mb-2">Email</label>
+                <input 
+                  className="w-full bg-slate-800/50 border border-slate-600 rounded-xl px-4 py-3 text-dark-100 placeholder-dark-400 brand-ring transition-all duration-200 hover:border-slate-500 focus:border-brand-500" 
+                  value={email} 
+                  onChange={e=>setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-dark-300 mb-2">Password</label>
+                <input 
+                  type="password" 
+                  className="w-full bg-slate-800/50 border border-slate-600 rounded-xl px-4 py-3 text-dark-100 placeholder-dark-400 brand-ring transition-all duration-200 hover:border-slate-500 focus:border-brand-500" 
+                  value={password} 
+                  onChange={e=>setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
+              </div>
+              
+              {err && (
+                <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-sm p-3 rounded-lg">
+                  {err}
+                </div>
+              )}
+              
+              <button 
+                type="submit"
+                className="w-full btn-primary py-3 text-lg font-semibold"
+              >
+                Sign in
+              </button>
+            </form>
+
+            {/* Demo Accounts */}
+            <div className="mt-8 pt-6 border-t border-slate-700/50">
+              <h3 className="font-semibold text-dark-200 mb-4 text-center">Demo Accounts</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                  <div>
+                    <span className="font-medium text-brand-300">Doctor:</span>
+                    <div className="text-sm text-dark-300">dr@demo.com / demo123</div>
+                  </div>
+                  <div className="w-2 h-2 bg-brand-400 rounded-full"></div>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                  <div>
+                    <span className="font-medium text-purple-300">Patient:</span>
+                    <div className="text-sm text-dark-300">pat@demo.com / demo123</div>
+                  </div>
+                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Back to Home Link */}
+          <div className="text-center mt-6">
+            <Link 
+              to="/" 
+              className="text-brand-400 hover:text-brand-300 text-sm font-medium transition-colors"
+            >
+              ← Back to Home
+            </Link>
+          </div>
         </div>
-        <div>
-          <label className="block text-sm mb-1">Password</label>
-          <input type="password" className="w-full border rounded px-3 py-2" value={password} onChange={e=>setPassword(e.target.value)} />
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 pb-6">
+        <div className="glass-card p-4 text-center">
+          <p className="text-xs text-dark-400">
+            Built for a hackathon demo with Cloudflare Workers, D1, and Workers AI.
+          </p>
         </div>
-        {err && <div className="text-red-600 text-sm">{err}</div>}
-        <button className="w-full bg-blue-600 text-white py-2 rounded">Sign in</button>
-      </form>
+      </footer>
     </div>
   )
 }

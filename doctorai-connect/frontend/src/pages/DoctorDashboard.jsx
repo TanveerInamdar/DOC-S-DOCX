@@ -352,9 +352,7 @@ export default function DoctorDashboard() {
               </button>
               <div className="bg-dark-800/30 border border-dark-700/50 rounded-lg p-4 min-h-[150px]">
                 {ai ? (
-                  <div className="prose prose-invert max-w-none">
-                    <pre className="whitespace-pre-wrap text-sm text-dark-200 leading-relaxed">{ai}</pre>
-                  </div>
+                  <div className="text-sm text-dark-200 leading-relaxed" dangerouslySetInnerHTML={{__html: ai}} />
                 ) : (
                   <p className="text-sm text-dark-400 italic">Click "Generate AI Summary" to create a comprehensive medical summary for this patient.</p>
                 )}
@@ -405,7 +403,7 @@ export default function DoctorDashboard() {
                       <span className="text-xs font-semibold text-brand-400">AI Copilot</span>
                     </div>
                   )}
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <div className="text-sm" dangerouslySetInnerHTML={{__html: msg.content}} />
                 </div>
               </div>
             ))
