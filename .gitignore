@@ -1,0 +1,17 @@
+# env files
+.env
+.env.*
+!.env.example
+!.env.template
+/frontend/.env.local
+
+# Cloudflare / Wrangler
+/backend/wrangler.toml
+/backend/.wrangler/
+.backend/.wrangler*
+.wrangler/
+
+# dependencies & build
+node_modules/
+dist/
+.build/
