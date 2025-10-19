@@ -72,7 +72,7 @@ export default function DoctorHome({ user }) {
                             Add appointment
                         </Link>
                         <Link
-                            to="/doctor/patients"
+                            to="/doctor/records"
                             className="px-3 py-1.5 rounded-lg bg-gray-100 text-sm"
                         >
                             View records
@@ -87,7 +87,7 @@ export default function DoctorHome({ user }) {
                         Generate a concise, non diagnostic summary of a patient's history.
                     </p>
                     <Link
-                        to="/doctor/patients"
+                        to="/doctor/ai"
                         className="inline-block mt-3 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm"
                     >
                         Open AI Summary

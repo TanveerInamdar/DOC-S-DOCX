@@ -6,6 +6,8 @@ import PatientDashboard from './pages/PatientDashboard'
 import Landing from './pages/Landing'
 import DoctorHome from './pages/DoctorHome'
 import AddAppointment from './pages/AddAppointment'
+import DoctorAISummary from './pages/DoctorAISummary'
+import DoctorRecords from './pages/DoctorRecords'
 import { api } from './api'
 
 export default function App() {
@@ -50,6 +52,8 @@ export default function App() {
                 <Route path="/doctor" element={<DoctorHome user={user} />} />
                 <Route path="/doctor/patients" element={<DoctorDashboard />} />
                 <Route path="/doctor/add" element={<AddAppointment />} />
+                <Route path="/doctor/ai" element={<DoctorAISummary />} />
+                <Route path="/doctor/records" element={<DoctorRecords />} />
 
                 {/* Patient route */}
                 <Route path="/patient" element={<PatientDashboard />} />
