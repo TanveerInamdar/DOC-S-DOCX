@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49be4924-37e0-40ef-8f2e-a3433cf1babf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/a12666ab6bd68929059c1badcf49392e1bd3cfdeef2a0baae33a14166becaf2c.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/a12666ab6bd68929059c1badcf49392e1bd3cfdeef2a0baae33a14166becaf2c.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/node_modules/.package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/src/worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/src/worker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/node_modules/.vite/deps/_metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorAISummary.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorAISummary.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/wrangler.toml" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/wrangler.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/DoctorHome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/frontend/src/pages/Login.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,18 +20,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "TanveerInamdar"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;TanveerInamdar&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/TanveerInamdar/PAKT",
-    "accountId": "bfcb6c2c-c506-4743-8886-317bda483b8a"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TanveerInamdar/PAKT&quot;,
+    &quot;accountId&quot;: &quot;bfcb6c2c-c506-4743-8886-317bda483b8a&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -69,7 +62,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
+        <option value="bundled-python-sdk-337b0a7a993a-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.19416.19" />
       </set>
     </attachedChunks>
   </component>

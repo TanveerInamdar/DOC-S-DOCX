@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const app = new Hono()
 
@@ -101,33 +102,106 @@ app.post('/api/patients/:id/ai-summary', async (c) => {
   const id = Number(c.req.param('id')); if (Number.isNaN(id)) return c.json({ error: 'bad id' }, 400)
   if (sess.role === 'patient' && sess.patientId !== id) return c.json({ error: 'forbidden' }, 403)
 
-  // Hardcoded AI response
-  const summary = `**Clinical Summary**
+  try {
+    // Get patient data
+    const patient = await c.env.DB.prepare('SELECT id, full_name, dob FROM patients WHERE id = ?').bind(id).first()
+    if (!patient) return c.json({ error: 'not found' }, 404)
+    
+    const appts = await c.env.DB.prepare(
+      `SELECT date, notes, medications, allergies FROM appointments
+       WHERE patient_id = ? ORDER BY date ASC`
+    ).bind(id).all()
+    
+    const appointmentHistory = (appts.results || []).map(r => `Date: ${r.date}
+Notes: ${r.notes}
+Medications: ${r.medications}
+Allergies: ${r.allergies}`).join('\n\n')
 
-This patient presents with a comprehensive medical history showing regular follow-up appointments and stable chronic disease management.
+    // Use Gemini API
+    const apiKey = c.env.GEMINI_API_KEY
+    if (!apiKey) {
+      return c.json({ error: 'GEMINI_API_KEY not configured' }, 500)
+    }
 
-📊 **Key Findings:**
-- Multiple documented visits showing consistent care
-- Well-managed medication regimen
-- No critical allergies requiring immediate attention
-- Overall stable clinical trajectory
+    const genAI = new GoogleGenerativeAI(apiKey)
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
-💊 **Current Treatment Plan:**
-The patient's current medications appear appropriate for their documented conditions. Continue monitoring for any adverse reactions.
+    const prompt = `You are a medical AI assistant. Create a concise clinical summary for this patient.
 
-⚠️ **Recommendations:**
-1. Continue current medication regimen
-2. Schedule regular follow-up appointments
-3. Monitor for any new symptoms or concerns
-4. Maintain updated allergy information
+Patient: ${patient.full_name} (DOB: ${patient.dob})
 
-📈 **Clinical Assessment:**
-Patient demonstrates good treatment compliance and stable health status. No immediate concerns noted. Recommend continued routine monitoring and preventive care.
+Appointment History:
+${appointmentHistory}
 
----
-*This is a demo AI summary. In production, this would be powered by advanced medical AI.*`
+Generate a brief, professional summary (max 200 words) covering:
+• Visit count and timeline
+• Current medications
+• Known allergies  
+• Key medical conditions
+• Clinical status
+• Next steps
 
-  return c.json({ summary })
+Keep it concise and clinically relevant. Use bullet points for clarity.`
+
+    const result = await model.generateContent(prompt)
+    const response = await result.response
+    const summary = response.text()
+
+    return c.json({ summary })
+  } catch (error) {
+    console.error('AI summary error:', error)
+    return c.json({ error: error.message || 'Failed to generate summary' }, 500)
+  }
+})
+
+app.post('/api/chat', async (c) => {
+  // TEMPORARY: Allow chat without strict authentication for development
+  const sess = decodeSession(getCookie(c, 'session'))
+  if (!sess) {
+    console.log('WARNING: Chat accessed without authentication')
+  }
+  
+  try {
+    const { message, context, history } = await c.req.json()
+    
+    if (!message) {
+      return c.json({ error: 'Message is required' }, 400)
+    }
+
+    // Use Gemini API
+    const apiKey = c.env.GEMINI_API_KEY
+    if (!apiKey) {
+      return c.json({ error: 'GEMINI_API_KEY not configured' }, 500)
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey)
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+
+    // Build conversation history for context
+    let conversationContext = `You are an AI medical assistant helping doctors with clinical decision-making, diagnosis, and treatment planning. You provide evidence-based medical guidance while being clear about when a topic requires specialist consultation or further investigation.
+
+${context ? `Current Context: ${context}\n` : ''}
+`
+
+    // Add previous conversation history
+    if (history && history.length > 0) {
+      conversationContext += '\nPrevious conversation:\n'
+      history.forEach(msg => {
+        conversationContext += `${msg.role === 'user' ? 'Doctor' : 'AI'}: ${msg.content}\n`
+      })
+    }
+
+    conversationContext += `\nDoctor: ${message}\nAI:`
+
+    const result = await model.generateContent(conversationContext)
+    const response = await result.response
+    const aiResponse = response.text()
+
+    return c.json({ response: aiResponse })
+  } catch (error) {
+    console.error('Chat error:', error)
+    return c.json({ error: error.message || 'Failed to get chat response' }, 500)
+  }
 })
 
 export default app

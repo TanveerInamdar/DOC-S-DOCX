@@ -9,6 +9,9 @@ export default function DoctorDashboard() {
   const [form, setForm] = useState({ date: '', notes: '', medications: '', allergies: '' })
   const [msg, setMsg] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [chatMessages, setChatMessages] = useState([])
+  const [chatInput, setChatInput] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
 
   useEffect(() => {
     api.get('/api/patients').then(r => setPatients(r.data.patients || [])).catch(()=>{})
@@ -43,6 +46,41 @@ export default function DoctorDashboard() {
     }
   }
 
+  const sendChatMessage = async () => {
+    if (!chatInput.trim()) return
+    
+    const userMessage = { role: 'user', content: chatInput }
+    setChatMessages(prev => [...prev, userMessage])
+    setChatInput('')
+    setIsTyping(true)
+
+    try {
+      const context = detail ? `Current patient: ${detail.patient.full_name}, DOB: ${detail.patient.dob}` : ''
+      const r = await api.post('/api/chat', { 
+        message: chatInput,
+        context,
+        history: chatMessages
+      })
+      const aiMessage = { role: 'assistant', content: r.data.response }
+      setChatMessages(prev => [...prev, aiMessage])
+    } catch (error) {
+      console.error('Chat error:', error)
+      console.error('Error response:', error.response?.data)
+      const errorMsg = error.response?.data?.error || error.message || 'Unknown error'
+      const errorMessage = { role: 'assistant', content: `Error: ${errorMsg}. Please make sure you're logged in.` }
+      setChatMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsTyping(false)
+    }
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendChatMessage()
+    }
+  }
+
   // Filter patients based on search term
   const filteredPatients = patients.filter(p => 
     p.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -50,8 +88,10 @@ export default function DoctorDashboard() {
   )
 
   return (
-    <div className="grid md:grid-cols-3 gap-4">
-      <div className="bg-white rounded-xl p-4 shadow">
+    <div className="flex gap-4 h-[calc(100vh-120px)]">
+      {/* Main Content Area */}
+      <div className="flex-1 grid md:grid-cols-3 gap-4 overflow-y-auto">
+        <div className="bg-white rounded-xl p-4 shadow h-fit">
         <h2 className="font-semibold mb-3">Patients</h2>
         
         {/* Search Bar */}
@@ -253,6 +293,90 @@ export default function DoctorDashboard() {
             </div>
           </>
         )}
+      </div>
+      </div>
+
+      {/* AI Chat Copilot Sidebar */}
+      <div className="w-96 bg-white rounded-xl shadow flex flex-col">
+        {/* Chat Header */}
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-t-xl">
+          <h2 className="text-lg font-semibold flex items-center">
+            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            AI Medical Copilot
+          </h2>
+          <p className="text-xs text-purple-100 mt-1">Ask me anything about diagnosis, treatment, or patient care</p>
+        </div>
+
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+          {chatMessages.length === 0 ? (
+            <div className="text-center text-gray-400 mt-8">
+              <svg className="w-16 h-16 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              <p className="text-sm">Start a conversation</p>
+              <p className="text-xs mt-2 px-4">Ask me to help with diagnoses, suggest treatments, or provide medical insights.</p>
+            </div>
+          ) : (
+            chatMessages.map((msg, idx) => (
+              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[85%] rounded-lg p-3 ${
+                  msg.role === 'user' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-white border border-gray-200 text-gray-800'
+                }`}>
+                  {msg.role === 'assistant' && (
+                    <div className="flex items-center mb-1">
+                      <svg className="w-4 h-4 mr-1 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-purple-600">AI Copilot</span>
+                    </div>
+                  )}
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              </div>
+            ))
+          )}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <div className="flex space-x-2">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Chat Input */}
+        <div className="p-4 border-t border-gray-200 bg-white rounded-b-xl">
+          <div className="flex gap-2">
+            <textarea
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask AI for medical guidance..."
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              rows="2"
+              disabled={isTyping}
+            />
+            <button
+              onClick={sendChatMessage}
+              disabled={isTyping || !chatInput.trim()}
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-2">Press Enter to send, Shift+Enter for new line</p>
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "hono": "^4.10.1"
+    "hono": "^4.10.1",
+    "@google/generative-ai": "^0.21.0"
   },
   "name": "backend",
   "version": "1.0.0",
