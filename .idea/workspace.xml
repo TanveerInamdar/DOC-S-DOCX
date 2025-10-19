@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="49be4924-37e0-40ef-8f2e-a3433cf1babf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/a12666ab6bd68929059c1badcf49392e1bd3cfdeef2a0baae33a14166becaf2c.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/doctorai-connect/backend/.wrangler/state/v3/d1/miniflare-D1DatabaseObject/a12666ab6bd68929059c1badcf49392e1bd3cfdeef2a0baae33a14166becaf2c.sqlite" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1760844760261</updated>
-      <workItem from="1760844761449" duration="2236000" />
+      <workItem from="1760844761449" duration="2924000" />
     </task>
     <servers />
   </component>

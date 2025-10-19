@@ -66,7 +66,7 @@ export default function DoctorHome({ user }) {
                     <div className="text-sm text-gray-500">Common action</div>
                     <div className="mt-2 flex gap-2">
                         <Link
-                            to="/doctor/patients"
+                            to="/doctor/add"
                             className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm"
                         >
                             Add appointment
@@ -84,7 +84,7 @@ export default function DoctorHome({ user }) {
                 <div className="bg-white border rounded-2xl p-5 shadow-sm">
                     <div className="text-sm text-gray-500">AI Summary</div>
                     <p className="text-sm text-gray-600 mt-2">
-                        Generate a concise, non diagnostic summary of a patient’s history.
+                        Generate a concise, non diagnostic summary of a patient's history.
                     </p>
                     <Link
                         to="/doctor/patients"

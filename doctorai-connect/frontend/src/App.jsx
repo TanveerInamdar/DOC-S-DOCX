@@ -1,11 +1,11 @@
-// src/App.jsx
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import Login from './pages/Login'
 import DoctorDashboard from './pages/DoctorDashboard'
 import PatientDashboard from './pages/PatientDashboard'
 import Landing from './pages/Landing'
-import DoctorHome from './pages/DoctorHome'     // <-- add
+import DoctorHome from './pages/DoctorHome'
+import AddAppointment from './pages/AddAppointment'
 import { api } from './api'
 
 export default function App() {
@@ -30,7 +30,7 @@ export default function App() {
                     {user?.role === 'doctor' && (
                         <>
                             <Link to="/doctor" className="text-blue-600">Doctor</Link>
-                            <Link to="/doctor/patients" className="text-blue-600">Patients</Link> {/* new */}
+                            <Link to="/doctor/patients" className="text-blue-600">Patients</Link>
                         </>
                     )}
                     {user?.role === 'patient' && <Link to="/patient" className="text-blue-600">Patient</Link>}
@@ -47,8 +47,9 @@ export default function App() {
                 <Route path="/login" element={<Login onLoggedIn={setUser} />} />
 
                 {/* Doctor routes */}
-                <Route path="/doctor" element={<DoctorHome user={user} />} />            {/* new landing */}
-                <Route path="/doctor/patients" element={<DoctorDashboard />} />          {/* existing manager */}
+                <Route path="/doctor" element={<DoctorHome user={user} />} />
+                <Route path="/doctor/patients" element={<DoctorDashboard />} />
+                <Route path="/doctor/add" element={<AddAppointment />} />
 
                 {/* Patient route */}
                 <Route path="/patient" element={<PatientDashboard />} />
